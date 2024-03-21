@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import Providers from './src/providers';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from './src/screens/Home/Home';
