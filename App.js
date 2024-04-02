@@ -1,17 +1,19 @@
 import Providers from './src/providers';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './src/screens/Home/Home';
-import { Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const Drawer = createDrawerNavigator();
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
   return (
     <Providers>
-      <Drawer.Navigator initialRouteName='Home'>
-        <Drawer.Screen name='Home' component={Home} />
-      </Drawer.Navigator>
-    </Providers>
+      <Tab.Navigator initialRouteName='Home' screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true }}>
+        <Tab.Screen name='Home' component={Home} options={{ tabBarIcon: () => <Icon name='home' size={25} color="#DDB130" /> }} />
+        <Tab.Screen name="back" component={Home} options={{ tabBarIcon: () => <Icon name="home" size={25} color="#DDB130" />, tabBarHideOnKeyboard: true }} />
+      </Tab.Navigator>
+    </Providers >
   );
 }

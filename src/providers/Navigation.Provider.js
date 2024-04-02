@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 
 const NavigationProvider = ({ children }) => {
     return (
