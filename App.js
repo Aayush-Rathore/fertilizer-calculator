@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import Providers from './src/providers';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './src/screens/Home/Home';
