@@ -1,19 +1,20 @@
 import Providers from './src/providers';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/screens/Home/Home';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Main from './src/screens/Main/Main';
 
 
-const Tab = createBottomTabNavigator();
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
 
   return (
     <Providers>
-      <Tab.Navigator initialRouteName='Home' screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true }}>
-        <Tab.Screen name='Home' component={Home} options={{ tabBarIcon: () => <Icon name='home' size={25} color="#DDB130" /> }} />
-        <Tab.Screen name="back" component={Home} options={{ tabBarIcon: () => <Icon name="home" size={25} color="#DDB130" />, tabBarHideOnKeyboard: true }} />
-      </Tab.Navigator>
+      <Stack.Navigator initialRouteName={"Home"} screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name="Main" component={Main} />
+      </Stack.Navigator>
     </Providers >
   );
 }
