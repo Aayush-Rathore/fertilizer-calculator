@@ -1,13 +1,12 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import Button from "../../components/Button";
-import { LinearGradient } from "expo-linear-gradient";
 
 const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        style={styles.img}
         source={require("../../../assets/mainLogo.png")}
+        style={{ width: 350, height: 350 }}
       />
       <View style={styles.title}>
         <Text style={styles.title1}>Fertilizer</Text>
@@ -22,6 +21,8 @@ const Home = ({ navigation }) => {
       </Button>
       <Image
         style={styles.clgLogo}
+        width={300}
+        height={50}
         source={require("../../../assets/cvru.png")}
       />
     </View>
@@ -54,11 +55,11 @@ const styles = StyleSheet.create({
   title2: {
     fontSize: 55,
     fontWeight: "400",
-    color: "#DDB130",
+    color: "#5CD14C",
   },
 
   button: {
-    backgroundColor: "#DDB130",
+    backgroundColor: "#5CD14C",
     minWidth: "70%",
     height: "8%",
     borderRadius: 50,

@@ -4,48 +4,44 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  FlatList,
+  ScrollView,
 } from "react-native";
 import Seperator from "../../components/Seperators";
 import Icon from "react-native-vector-icons/Feather";
 
 const menus = [
   {
-    id: 1,
     topSectionTitle: "फसलें",
     topSectionLogo: require("../../../assets/land.png"),
     cardTitle: "शुरू करने के लिए फसल चुने",
     bottomSectionTitle: "फसल सूची",
+    navigate: "Crops",
   },
 
   {
-    id: 2,
     topSectionTitle: "उर्वरक",
     topSectionLogo: require("../../../assets/fertilizer.png"),
     cardTitle: "उर्वरक की जानकारी",
     bottomSectionTitle: "उर्वरक सूची",
+    navigate: "Fertilizer",
   },
 ];
 
-const ScreenCard = ({ item }) => {
+const ScreenCard = ({ iteam, onClick }) => {
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        console.log("Hy");
-      }}
-    >
+    <TouchableWithoutFeedback onPress={onClick}>
       <View style={styles.card}>
         <View style={styles.topSection}>
-          <Text style={styles.topSectionTitle}>{item.topSectionTitle}</Text>
-          <Image style={styles.topSectionLogo} source={item.topSectionLogo} />
+          <Text style={styles.topSectionTitle}>{iteam.topSectionTitle}</Text>
+          <Image style={styles.topSectionLogo} source={iteam.topSectionLogo} />
         </View>
-        <Text style={styles.cardTitle}>{item.cardTitle}</Text>
-        {item.bottomSectionTitle && (
+        <Text style={styles.cardTitle}>{iteam.cardTitle}</Text>
+        {iteam.bottomSectionTitle && (
           <>
             <Seperator color="#777777" />
             <View style={styles.bottomSection}>
               <Text style={styles.bottomSectionTitle}>
-                {item.bottomSectionTitle}
+                {iteam.bottomSectionTitle}
               </Text>
               <Icon name="chevron-right" size={30} color="#5CD14C" />
             </View>
@@ -56,22 +52,36 @@ const ScreenCard = ({ item }) => {
   );
 };
 
-const Main = () => {
+const Main = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        style={styles.img}
         source={require("../../../assets/mainLogo.png")}
+        style={{ width: 244, height: 244 }}
       />
-      <FlatList
-        data={menus}
-        renderItem={ScreenCard}
-        key={(data) => data.index}
-        contentContainerStyle={{ height: "auto" }}
-      />
-      <View style={styles.otherCards}>
-        <Text>Hello</Text>
-      </View>
+      <ScrollView>
+        {menus.map((iteam, index) => {
+          return (
+            <ScreenCard
+              iteam={iteam}
+              key={index}
+              onClick={() => navigation.navigate(iteam.navigate)}
+            />
+          );
+        })}
+        <TouchableWithoutFeedback>
+          <View style={styles.otherCard}>
+            <Text style={styles.cardTitle}>मौसम की जानकारी</Text>
+            <Icon name="chevron-right" size={30} color="#5CD14C" />
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback>
+          <View style={styles.otherCard}>
+            <Text style={styles.cardTitle}>संपर्क करें</Text>
+            <Icon name="chevron-right" size={30} color="#5CD14C" />
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
     </View>
   );
 };
@@ -134,9 +144,16 @@ const styles = StyleSheet.create({
     color: "white",
   },
 
-  otherCards: {
+  otherCard: {
+    backgroundColor: "#26282A",
     width: "100%",
-    backgroundColor: "#111111",
+    padding: 10,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
   },
 });
 
