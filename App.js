@@ -4,9 +4,12 @@ import Home from './src/screens/Home/Home';
 import Main from './src/screens/Main/Main';
 import Crops from './src/screens/Crops/Crops';
 import Icon from "react-native-vector-icons/Feather";
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { HeaderBackButton } from "@react-navigation/elements"
 import Calculat from './src/screens/Crops/Calculat';
+import Contact from './src/screens/Contact/Contact';
+import Fertilizer from './src/screens/Fertilizer/Fertilizer';
+import Weather from './src/screens/Weather/weather';
 
 
 
@@ -20,6 +23,9 @@ export default function App() {
         <Stack.Screen name='Home' component={Home} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Crops" component={CropScreens} />
+        <Stack.Screen name="Contact" component={Contact} />
+        <Stack.Screen name="Fertilizer" component={Fertilizer} />
+        <Stack.Screen name="Weather" component={Weather} />
       </Stack.Navigator>
     </Providers >
   );

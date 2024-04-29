@@ -69,13 +69,17 @@ const Main = ({ navigation }) => {
             />
           );
         })}
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("Weather")}
+        >
           <View style={styles.otherCard}>
             <Text style={styles.cardTitle}>मौसम की जानकारी</Text>
             <Icon name="chevron-right" size={30} color="#5CD14C" />
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("Contact")}
+        >
           <View style={styles.otherCard}>
             <Text style={styles.cardTitle}>संपर्क करें</Text>
             <Icon name="chevron-right" size={30} color="#5CD14C" />

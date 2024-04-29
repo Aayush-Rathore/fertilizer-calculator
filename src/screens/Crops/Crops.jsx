@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -7,18 +8,31 @@ import {
 } from "react-native";
 import { crops } from "../data/data";
 import Icon from "react-native-vector-icons/Feather";
+import { speak, stop } from "expo-speech";
+import { useIsFocused } from "@react-navigation/native";
 
 const Crops = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (!isFocused) stop();
+    else {
+      speak("कृपया, अपनी फसल का चयन करें!", {
+        language: "hi",
+        pitch: 1,
+        rate: 0.8,
+      });
+    }
+  }, []);
   return (
     <View style={styles.container}>
       <FlatList
         data={crops}
-        renderItem={({ item, index }) => {
+        renderItem={(data) => {
           return (
             <TouchableWithoutFeedback
-              key={index}
+              key={data.index}
               onPress={() => {
-                navigation.navigate("Calculat", { data: item.values });
+                navigation.navigate("Calculat", { data: data.item.values });
               }}
             >
               <View
@@ -34,7 +48,7 @@ const Crops = ({ navigation }) => {
                 }}
               >
                 <Text style={{ color: "white", fontSize: 20 }}>
-                  {item.name}
+                  {data.item.name}
                 </Text>
                 <Icon name="chevron-right" size={30} color="#5CD14C" />
               </View>

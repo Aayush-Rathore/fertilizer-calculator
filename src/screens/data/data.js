@@ -1,7 +1,7 @@
 export const crops = [
     {
         name: "गेहूँ",
-        values: [120, 60, 60]
+        values: [120, 60, 60],
     },
     {
         name: "धान",
@@ -30,5 +30,9 @@ export const crops = [
     {
         name: "सोयाबीन",
         values: [30, 60, 30]
+    },
+    {
+        name: "प्याज",
+        values: [100, 50, 50]
     },
 ]

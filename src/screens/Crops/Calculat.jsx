@@ -1,26 +1,76 @@
-import { useState } from "react";
-import { Text, View, TextInput, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  Text,
+  View,
+  TextInput,
+  StyleSheet,
+  Keyboard,
+  ToastAndroid,
+} from "react-native";
 import Button from "../../components/Button";
 import Seperator from "../../components/Seperators";
+import { speak, stop } from "expo-speech";
+import { useIsFocused } from "@react-navigation/native";
 
 const Calculat = ({ route }) => {
-  const [values, setValues] = useState();
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (!isFocused) stop();
+    else {
+      speak("आपकी कितनी भूमि है, दर्ज करे!", {
+        language: "hi",
+        pitch: 1,
+        rate: 0.8,
+      });
+    }
+  }, []);
+  const [value, setValue] = useState();
   const [mode, setMode] = useState(true);
-  const [doses, setDoses] = useState({
-    Urea: 0,
-    DAP: 0,
-    MOP: 0,
-  });
+  const [showValues, setShowValues] = useState(false);
 
   const [urea, setUrea] = useState();
-  const [dap, setDap] = useState();
+  const [dap, setDap] = useState(0);
   const [mop, setMop] = useState();
 
   const { data } = route.params;
 
   const calculatValues = () => {
-    setUrea(Math.round((100 / 46) * data[2] * +values));
+    if (value <= 0) {
+      ToastAndroid.show("कृपया, पहले अपनी भूमि दर्ज करे!", ToastAndroid.CENTER);
+      speak("कृपया, पहले अपनी भूमि दर्ज करे!", {
+        language: "hi",
+        pitch: 1,
+        rate: 0.8,
+      });
+    } else {
+      Keyboard.dismiss();
+      setShowValues(true);
+      speak(
+        `आपको ${urea} किलोग्राम यूरिया, ${dap} किलोग्राम डीएपी ओर ${mop} किलोग्राम एमओपी की जरुरत है|`,
+        {
+          language: "hi",
+          pitch: 1,
+          rate: 0.8,
+        }
+      );
+    }
   };
+
+  useEffect(() => {
+    const P_dap = Math.round((100 / 46) * data[1] * +value);
+    const N_dap = Math.round((P_dap * 18) / 100);
+    const N_urea = Math.round((100 / 46) * (data[0] - N_dap) * +value);
+    const K_mop = Math.round((100 / 58) * data[2] * +value);
+    if (mode) {
+      setUrea(N_urea);
+      setDap(P_dap);
+      setMop(K_mop);
+    } else {
+      setUrea(Math.round(N_urea / 2.47));
+      setDap(Math.round(P_dap / 2.47));
+      setMop(Math.round(K_mop / 2.47));
+    }
+  }, [value, mode]);
 
   return (
     <View
@@ -55,37 +105,72 @@ const Calculat = ({ route }) => {
         </Button>
       </View>
       <TextInput
-        placeholder="Enter field area"
+        placeholder="आप के पास कितनी जमीन है"
         placeholderTextColor="white"
         style={styles.input}
         inputMode="numeric"
         onChangeText={(text) => {
-          setValues(text);
-          calculatValues();
+          setValue(text);
         }}
-        value={values}
+        onFocus={() => {
+          setShowValues(false);
+        }}
+        value={value}
       />
-      <Button style={styles.calcBtn} btnText={styles.calcBtnText}>
+      <Button
+        style={styles.calcBtn}
+        btnText={styles.calcBtnText}
+        onClick={calculatValues}
+      >
         मात्रा देखें
       </Button>
-      <View style={styles.calcValue}>
-        <Text style={{ fontSize: 18, color: "white", marginBottom: 5 }}>
-          आवश्यक उर्वरक खुराक !
-        </Text>
-        <Seperator color="#777777" />
-        <View style={{ paddingVertical: 20 }}>
-          <Text
+      {showValues && (
+        <View style={styles.calcValue}>
+          <Text style={{ fontSize: 18, color: "white", marginBottom: 5 }}>
+            आवश्यक उर्वरक खुराक !
+          </Text>
+          <Seperator color="#777777" />
+          <View
             style={{
-              fontSize: 18,
-              color: "white",
-              marginBottom: 5,
-              textAlign: "center",
+              paddingVertical: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
             }}
           >
-            यूरिया की मात्रा {urea}
-          </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                color: "white",
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              यूरिया की मात्रा: {urea} किलोग्राम
+            </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                color: "white",
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              डी.ए.पी की मात्रा: {dap} किलोग्राम
+            </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                color: "white",
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              एम.ओ.पी की मात्रा: {mop} किलोग्राम
+            </Text>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 };
@@ -96,7 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     backgroundColor: "#26282A",
     borderRadius: 10,
-    flex: 1 / 12,
+    minHeight: 50,
   },
 
   modeBtn: {
@@ -111,7 +196,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    flex: 1 / 13,
+    minHeight: 55,
     width: "100%",
     borderRadius: 6,
     fontSize: 15,
@@ -125,7 +210,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#5CD44C",
     borderRadius: 10,
-    flex: 1 / 15,
+    minHeight: 50,
   },
 
   calcBtnText: {
@@ -135,7 +220,7 @@ const styles = StyleSheet.create({
   },
 
   calcValue: {
-    flex: 1 / 2,
+    flex: 1 / 3,
     width: "100%",
     backgroundColor: "#26282A",
     height: 100,
