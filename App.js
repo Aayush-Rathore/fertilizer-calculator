@@ -25,7 +25,22 @@ export default function App() {
         <Stack.Screen name="Crops" component={CropScreens} />
         <Stack.Screen name="Contact" component={Contact} />
         <Stack.Screen name="Fertilizer" component={Fertilizer} />
-        <Stack.Screen name="Weather" component={Weather} />
+        <Stack.Screen name="WeatherScreens" component={WeatherScreens} options={{
+          headerLeft: () => {
+            return (
+              <HeaderBackButton
+                onPress={() => navigation.goBack()}
+                backImage={() => {
+                  return (
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Icon name="chevron-left" size={30} color="#5CD14C" />
+                      <Text style={{ color: "#5CD14C", fontWeight: "600", fontSize: 20 }}>अपनी फसल चुनें</Text>
+                    </View>
+                  )
+                }} />
+            )
+          },
+        }} />
       </Stack.Navigator>
     </Providers >
   );
@@ -33,10 +48,11 @@ export default function App() {
 
 const CropScreens = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName={"Home"} screenOptions={{
+    <Stack.Navigator initialRouteName={"selectCrops"} screenOptions={{
       headerShown: true, headerStyle: { backgroundColor: "#1D1919" }, headerLargeTitleShadowVisible: false, headerSearchBarOptions: {
         headerIconColor: "white", textColor: "white", hideWhenScrolling: true, obscureBackground: true, shouldShowHintSearchIcon: false, tintColor: "white", placeholder: "", inputType: "text"
       },
+      headerTitle: "",
       headerLeft: () => {
         return (
           <HeaderBackButton
@@ -70,6 +86,36 @@ const CropScreens = ({ navigation }) => {
           )
         },
       }} />
+    </Stack.Navigator>
+  )
+}
+
+const WeatherScreens = ({ navigation }) => {
+  return (
+    <Stack.Navigator initialRouteName={"Home"} screenOptions={{
+      headerShown: true, headerStyle: { backgroundColor: "#1D1919" }, headerLargeTitleShadowVisible: false, headerSearchBarOptions: {
+        headerIconColor: "white", textColor: "white", hideWhenScrolling: true, obscureBackground: true, shouldShowHintSearchIcon: false, tintColor: "white", placeholder: "", inputType: "text",
+
+      },
+      headerTitle: "",
+
+      headerLeft: () => {
+        return (
+          <HeaderBackButton
+            onPress={() => navigation.goBack()}
+            backImage={() => {
+              return (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon name="chevron-left" size={30} color="#5CD14C" />
+                  <Text style={{ color: "#5CD14C", fontWeight: "600", fontSize: 20 }}>अपनी फसल चुनें</Text>
+                </View>
+              )
+            }} />
+        )
+      },
+
+    }}>
+      <Stack.Screen name='Weathers' component={Weather} />
     </Stack.Navigator>
   )
 }

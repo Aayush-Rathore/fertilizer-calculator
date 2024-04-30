@@ -57,14 +57,14 @@ const Calculat = ({ route }) => {
   };
 
   useEffect(() => {
-    const P_dap = Math.round((100 / 46) * data[1] * +value);
+    const P_dap = Math.round((100 / 46) * data[1]);
     const N_dap = Math.round((P_dap * 18) / 100);
-    const N_urea = Math.round((100 / 46) * (data[0] - N_dap) * +value);
-    const K_mop = Math.round((100 / 58) * data[2] * +value);
+    const N_urea = Math.round((100 / 46) * (data[0] - N_dap));
+    const K_mop = Math.round((100 / 58) * data[2]);
     if (mode) {
-      setUrea(N_urea);
-      setDap(P_dap);
-      setMop(K_mop);
+      setUrea(N_urea * +value);
+      setDap(P_dap * +value);
+      setMop(K_mop * +value);
     } else {
       setUrea(Math.round(N_urea / 2.47));
       setDap(Math.round(P_dap / 2.47));

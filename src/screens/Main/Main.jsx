@@ -70,7 +70,7 @@ const Main = ({ navigation }) => {
           );
         })}
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate("Weather")}
+          onPress={() => navigation.navigate("WeatherScreens")}
         >
           <View style={styles.otherCard}>
             <Text style={styles.cardTitle}>मौसम की जानकारी</Text>
