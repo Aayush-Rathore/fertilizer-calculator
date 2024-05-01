@@ -1,7 +1,34 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import Button from "../../components/Button";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
+import { useEffect, useState } from "react";
+import useStore from "../../dataStore/zustand";
 
 const Home = ({ navigation }) => {
+  const [Error, setError] = useState(null);
+  // const [location, setLocation] = useState(null);
+  const setLocation = useStore((state) => state.setLocation);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setError("Permission to access location was denied");
+        return;
+      }
+
+      const location = (await getCurrentPositionAsync({})).coords;
+
+      setLocation({
+        lat: location.latitude,
+        long: location.longitude,
+      });
+    })();
+  });
+
   return (
     <View style={styles.container}>
       <Image

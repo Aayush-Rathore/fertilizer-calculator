@@ -12,7 +12,9 @@ const Fertilizer = ({ navigation }) => {
         gap: 20,
       }}
     >
-      <Text style={{ fontSize: 25, color: "white" }}>Your Api Get Expired</Text>
+      <Text style={{ fontSize: 25, color: "white" }}>
+        उर्वरक संबंधी जानकारी उपलब्ध नहीं है
+      </Text>
       <Button
         style={{
           backgroundColor: "#26282A",
@@ -23,7 +25,7 @@ const Fertilizer = ({ navigation }) => {
         btnText={{ fontSize: 20, color: "white", fontWeight: "600" }}
         onClick={() => navigation.navigate("Main")}
       >
-        Go Back
+        वापस जाए
       </Button>
     </View>
   );
